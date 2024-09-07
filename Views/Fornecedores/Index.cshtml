@@ -1,0 +1,134 @@
+﻿@model List<Fornecedor>
+@{
+}
+
+<h2 class="text-center mb-5">Lista de Fornecedores</h2>
+
+<div class="row mb-5">
+    <div class="col">
+        <a class="btn btn-primary" asp-controller="Fornecedores" asp-action="Create">Novo Fornecedor</a>
+    </div>
+    <div class="col">
+
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+           
+            <th>Nome</th>
+            <th>Cnpj</th>
+            <th>Segmento</th>
+            <th>Cep</th>
+            <th>Endereco</th>
+            <th>Bairro</th>
+            <th>Número</th>
+            <th>Localidade</th>
+            <th>Uf</th>
+            <th>Imagem</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var fornecedor in Model)
+        {
+            <tr>
+                
+                <td>@fornecedor.Nome</td>
+                <td>@fornecedor.Cnpj</td>
+                <td>@fornecedor.Segmento</td>
+                <td>@fornecedor.Cep</td>
+                <td>@fornecedor.Endereco</td>
+                <td>@fornecedor.Bairro</td>
+                <td>@fornecedor.Numero</td>
+                <td>@fornecedor.Localidade</td>
+                <td>@fornecedor.Uf</td>
+                <td><img src="/fotos/@fornecedor.Imagem" width="200"/></td>
+                <td style="white-space:nowrap">
+                    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#detalhesModal" data-imagem="@fornecedor.Imagem"
+                       data-nome="@fornecedor.Nome" data-cnpj="@fornecedor.Cnpj" data-segmento="@fornecedor.Segmento" data-cep="@fornecedor.Cep"
+                            data-endereco="@fornecedor.Endereco" data-bairro="@fornecedor.Bairro" data-numero="@fornecedor.Numero" data-cidade="@fornecedor.Localidade" data-estado="@fornecedor.Uf">
+                        Detalhes
+                    </button>
+                    <a class="btn btn-primary btn-sm" asp-controller="Fornecedores" asp-action="Edit" 
+                    asp-route-id="@fornecedor.Id">
+                        Editar
+                    </a>
+                    <a class="btn btn-danger btn-sm" asp-controller="Fornecedores" asp-action="Delete"
+                       asp-route-id="@fornecedor.Id" onclick="return confirm('Tem certeza que deseja deletar?')">
+                        Deletar
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="detalhesModal" tabindex="-1" aria-labelledby="detalhesModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detalhesModalLabel">Detalhes do Fornecedor</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" arial-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img id="fornecedorImagem" width="150" />
+                    </div>
+                    <div class="col-md-8">
+                        <p><strong>Nome: </strong><span id="fornecedorNome"></span></p>
+                        <p><strong>Cnpj: </strong><span id="fornecedorCnpj"></span></p>
+                        <p><strong>Segmento: </strong><span id="fornecedorSegmento"></span></p>
+                        <p><strong>Cep: </strong><span id="fornecedorCep"></span></p>
+                        <p><strong>Endereço: </strong><span id="fornecedorEndereco"></span></p>
+                        <p><strong>Bairro: </strong><span id="fornecedorBairro"></span></p>
+                        <p><strong>Número: </strong><span id="fornecedorNumero"></span></p>
+                        <p><strong>Cidade: </strong><span id="fornecedorCidade"></span></p>
+                        <p><strong>Estado: </strong><span id="fornecedorEstado"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#detalhesModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget); //botão que aciona o modal
+                var nome = button.data('nome');
+                var cnpj = button.data('cnpj');
+                var segmento = button.data('segmento');
+                var cep = button.data('cep');
+                var endereco = button.data('endereco');
+                var bairro = button.data('bairro');
+                var numero = button.data('numero');
+                var cidade = button.data('cidade');
+                var estado = button.data('estado');
+                var imagem = button.data('imagem');
+
+                console.log(numero);
+                //atualiza o contéudo do modal
+                $('#fornecedorNome').text(nome);
+                $('#fornecedorCnpj').text(cnpj);
+                $('#fornecedorSegmento').text(segmento);
+                $('#fornecedorCep').text(cep);
+                $('#fornecedorEndereco').text(endereco);
+                $('#fornecedorNumero').text(numero);
+                $('#fornecedorCidade').text(cidade);
+                $('#fornecedorEstado').text(estado);
+                $('#fornecedorBairro').text(bairro);
+                $('#fornecedorImagem').attr('src', "/fotos/" + imagem);
+            });
+        })
+    </script>
+}
+
